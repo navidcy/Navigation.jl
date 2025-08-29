@@ -8,9 +8,14 @@ Source: en.wikipedia.org/wiki/Earth_radius
 const Rₑ_m = 6371008.7714
 
 "Point type with latitude `ϕ` [deg] and longitude `λ` [deg]"
-struct Point{T<:Float64}
+struct Point{T<:AbstractFloat}
     ϕ::T
     λ::T
+
+    function Point(ϕ::Number, λ::Number)
+        T = promote_type(typeof(float(ϕ)), typeof(float(λ)))
+        return new{T}(convert(T, ϕ), convert(T, λ))
+    end
 end
 
 (-)(x::Point, y::Point) = Point(x.ϕ - y.ϕ, x.λ - y.λ)
